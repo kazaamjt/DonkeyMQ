@@ -1,0 +1,9 @@
+# Python
+.mypy_cache/
+
+# Python venv
+venv/
+devenv/
+
+# IDE's
+.vscode/
