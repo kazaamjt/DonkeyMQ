@@ -1,37 +1,22 @@
-## Welcome to GitHub Pages
+# Writing an AMQP server from scratch
 
-You can use the [editor on GitHub](https://github.com/kazaamjt/DonkeyMQ/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
+Through this series I will be attempting to write an AMQP server from scratch.  
+For my day job I have used RabbitMQ in combination with multiple plugins and client libraries.  
+I recently had to dig deep in to the [RabbitMQ-C Library](https://github.com/alanxz/rabbitmq-c) and making RabbitMQ scale horizontaly.  
+This sparked my interests and I wanted to know more about how AMQP works, what it defines and what it leaves up to implementers.  
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Specifically I want to dig in to the following topics:  
 
-### Markdown
+- How does AMQP work at a base level
+- How does distribution of a cluster work
+- Uncover The inner workings of queues, exchanges and routing
+- Maybe tackle some of the horizontal scaling problems RMQ has?
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+To do all this, I will be working off the [AMQP](https://www.amqp.org/) official [version 1.0 spec](http://www.amqp.org/sites/amqp.org/files/amqp.pdf).  
 
-```markdown
-Syntax highlighted code block
+This project was inspired by such projects as [CStack's awesome DB-Tutorial](https://github.com/cstack/db_tutorial) and [Handmade Hero](https://handmadehero.org/).  
 
-# Header 1
-## Header 2
-### Header 3
+## Table of contents
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/kazaamjt/DonkeyMQ/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+{% for part in site.parts %}- [{{part.title}}]({{site.baseurl}}{{part.url}})
+{% endfor %}
