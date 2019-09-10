@@ -20,4 +20,4 @@ This project was inspired by such projects as [CStack's awesome DB-Tutorial](htt
 
 ## Table of contents
 
-[Part 1 - Introduction and setup](part1.md)
+[Part 1 - Introduction and setup](_parts/part1.md)
