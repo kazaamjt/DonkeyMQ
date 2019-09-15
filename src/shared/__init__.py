@@ -15,7 +15,7 @@ def get_event_loop() -> Any:
 
     return loop
 
-def protocol_header_bytes() -> bytes:
+def get_protocol_header_bytes() -> bytes:
     """Constructs a protocol header represented in bytes"""
     header = b"AMQP"
     header += (0).to_bytes(1, byteorder="big", signed=False)

@@ -4,7 +4,7 @@ Specifically aimed at working with DonkeyMQ.
 """
 import asyncio
 
-from shared import get_event_loop, protocol_header_bytes
+from shared import get_event_loop, get_protocol_header_bytes
 
 class Client:
     """
@@ -15,7 +15,7 @@ class Client:
         self.ip_address = ip_address
         self.port = port
         self.loop = loop
-        self.protocol_header = protocol_header_bytes()
+        self.protocol_header = get_protocol_header_bytes()
 
         self.reader: asyncio.streams.StreamReader
         self.writer: asyncio.streams.StreamWriter

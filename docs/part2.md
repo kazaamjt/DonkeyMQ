@@ -20,7 +20,11 @@ This `Protocol Header` consists of the following 8 octets:
 
 That doesn't look very complicated, right?  
 Ok so first we need to convert everything to bytes and simply send them over the wire.  
-Since both our client and server will be using the same header, I'll make a constructor and put in our shared module.  
+Since both our client and server will be using the same protocol header, I'll make a constructor and put in the shared module.  
+
+Now the AMQP spec has type definitions we'll have to adhere to.  
+Luckily in the case of strings, it's just utf-8, which python uses by default.  
+The integers on the other hand have to be converted specifically to big endian unsigned values, and may not be larger than 1 byte in this case.  
 
 file: *src/shared/\_\_init\_\_.py*
 
@@ -34,8 +38,6 @@ def protocol_header_bytes() -> bytes:
 
     return header
 ```
-
-Due to python 3 using utf-8 by default, all we have to do is the following:
 
 [<< Part 1 - Introduction and setup](part1.md)  
 [Back to index](index.md)  

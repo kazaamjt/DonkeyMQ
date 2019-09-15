@@ -18,6 +18,8 @@ To do all this, I will be working off the [AMQP](https://www.amqp.org/) official
 
 This project was inspired by such projects as [CStack's awesome DB-Tutorial](https://github.com/cstack/db_tutorial) and [Handmade Hero](https://handmadehero.org/).  
 
+Feedback and pull requests are welcome.  
+
 ## Table of contents
 
 [Part 1 - Introduction and setup](part1.md)  
