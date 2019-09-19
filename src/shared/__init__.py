@@ -3,8 +3,10 @@
 import sys
 import asyncio
 from typing import Any
+from shared import consts
+from shared import amqp
 
-# obsolete in 3.8+, hopefully
+# obsolete with python 3.8+, hopefully
 def get_event_loop() -> Any:
     """Returns an event loop based on platform"""
     if sys.platform.startswith("win"):
@@ -17,10 +19,9 @@ def get_event_loop() -> Any:
 
 def get_protocol_header_bytes() -> bytes:
     """Constructs a protocol header represented in bytes"""
-    header = b"AMQP"
-    header += (0).to_bytes(1, byteorder="big", signed=False)
-    version = (1, 0, 0)
-    for number in version:
-        header += number.to_bytes(1, byteorder="big", signed=False)
+    header = amqp.str_to_bytes("AMQP")
+    header += amqp.int_to_bytes(0)
+    for number in consts.VERSION:
+        header += amqp.int_to_bytes(number)
 
     return header
