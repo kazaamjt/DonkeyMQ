@@ -24,7 +24,7 @@ class Client:
         self.reader, self.writer = await asyncio.open_connection(self.ip_address, self.port, loop=self.loop)
         version_match = await self._negotiate_version()
         if version_match:
-            pass
+            print("Version match")
 
     async def _negotiate_version(self) -> bool:
         self.writer.write(self.protocol_header)

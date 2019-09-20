@@ -19,7 +19,7 @@ file: *src/shared/consts.py*
 """
 A module holding constants shared by the server and client.
 """
-VERSION = (1, 0, 0)
+AMQP_VERSION = (1, 0, 0)
 ```
 
 The spec states that before any frames can be sent (more on frames later), the protocol version must be negotiated.  
@@ -58,7 +58,7 @@ def bytes_to_int(int_bytes: bytes) -> int:
     return int.from_bytes(int_bytes, byteorder="big", signed=False)
 ```
 
-(We'll come back and )
+(We'll come back and add more type convertors later)  
 Next, let's add a header constructor to our shared module:  
 
 file: *src/shared/\_\_init\_\_.py*  
@@ -78,7 +78,7 @@ def get_protocol_header_bytes() -> bytes:
 
 Next let's add it to our client and sent it as our first message.  
 
-file: *src/client.py*
+file: *src/client.py*  
 
 ```Python
 class Client:
@@ -90,8 +90,62 @@ class Client:
 
         self.reader: asyncio.streams.StreamReader
         self.writer: asyncio.streams.StreamWriter
+
+    async def connect(self) -> None:
+        self.reader, self.writer = await asyncio.open_connection(self.ip_address, self.port, loop=self.loop)
+        version_match = await self._negotiate_version()
+        if version_match:
+            print("Version match")
+
+    async def _negotiate_version(self) -> bool:
+        self.writer.write(self.protocol_header)
+
+        data = await self.reader.read(8)
+        version_match = False
+        if data == self.protocol_header:
+            version_match = True
+
+        return version_match
 ```
 
+While the client should immediatly send it's `Protocol Header`, the server may opt to wait.  
+In all cases the server responds with a `Protocol Header`.  
+It either responds with the same `Protocol Header`, or it responds with a valid `Protocol Header` and close the connection.  
+
+In our case, right now that just means responding with the `Protocol Header` no matter what.  
+
+The code we add is basicly the same as for the client, but in a slightly different order:  
+
+```Python
+class Server:
+    def __init__(self, ip_address: str = "0.0.0.0", port: int = 5672) -> None:
+        self.ip_address = ip_address
+        self.port = port
+        self.loop = get_event_loop()
+        self.protocol_header = get_protocol_header_bytes()
+
+        self.loop.add_signal_handler(signal.SIGTERM, self.stop)
+        self.loop.add_signal_handler(signal.SIGINT, self.stop)
+
+        self.server: asyncio.base_events.Server
+
+    async def handle_connection(self, reader: StreamReader, writer: StreamWriter) -> None:
+        addr = writer.get_extra_info("peername")
+        print(f"[{addr[0]}:{addr[1]}] Connected")
+        version = await self._negotiate_version(reader, writer)
+        if version:
+            print(f"[{addr[0]}:{addr[1]}]  Version match")
+
+    async def _negotiate_version(self, reader: StreamReader, writer: StreamWriter) -> bool:
+        data = await reader.read(8)
+        version_match = False
+        if data == self.protocol_header:
+            version_match = True
+
+        writer.write(self.protocol_header)
+
+        return version_match
+```
 
 [<< Part 1 - Introduction and setup](part1.md)  
 [Back to index](index.md)  

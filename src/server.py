@@ -23,9 +23,9 @@ class Server:
     async def handle_connection(self, reader: StreamReader, writer: StreamWriter) -> None:
         addr = writer.get_extra_info("peername")
         print(f"[{addr[0]}:{addr[1]}] Connected")
-        version = await  self._negotiate_version(reader, writer)
+        version = await self._negotiate_version(reader, writer)
         if version:
-            pass
+            print(f"[{addr[0]}:{addr[1]}] Version match")
 
     async def _negotiate_version(self, reader: StreamReader, writer: StreamWriter) -> bool:
         data = await reader.read(8)

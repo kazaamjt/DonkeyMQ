@@ -21,7 +21,7 @@ def get_protocol_header_bytes() -> bytes:
     """Constructs a protocol header represented in bytes"""
     header = amqp.str_to_bytes("AMQP")
     header += amqp.int_to_bytes(0)
-    for number in consts.VERSION:
+    for number in consts.AMQP_VERSION:
         header += amqp.int_to_bytes(number)
 
     return header

@@ -31,7 +31,7 @@ The default eventloop on windows is currently not interuptable.
 While in python 3.8 this is supposedly fixed, it is not in my 3.7.4 version.  
 So I set up a litle function that hands the right type of event loop:  
 
-file: *src/shared/\_\_init\_\_.py*
+file: *src/shared/\_\_init\_\_.py*  
 
 ```python
 import sys
@@ -54,7 +54,7 @@ We then expect an "ok" reply and close the connection either way.
 
 This emulates the setting up and tearing down connections a litle bit like AMQP does.  
 
-file: *src/client.py*
+file: *src/client.py*  
 
 ```python
 import asyncio
@@ -117,7 +117,7 @@ Running python apps as a service on windows is a pain. (windows services are a p
 A somewhat simple module allowing python scripts to run as a service can be found [here](https://github.com/kazaamjt/WinPyService).  
 But I digress, back to programming:  
 
-file: *src/server.py*
+file: *src/server.py*  
 
 ```python
 import signal
