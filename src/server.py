@@ -58,6 +58,7 @@ class Server:
             try:
                 self.loop.run_forever()
             except KeyboardInterrupt:
+                self.stop()
                 self.loop.run_until_complete(self.wakeup())
         else:
             self.loop.run_forever()
