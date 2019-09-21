@@ -22,6 +22,7 @@ class Server:
             self.loop.add_signal_handler(signal.SIGINT, self.stop)
 
         self.server: asyncio.base_events.Server
+        self.running: bool
 
     async def handle_connection(self, reader: StreamReader, writer: StreamWriter) -> None:
         addr = writer.get_extra_info("peername")
@@ -41,22 +42,23 @@ class Server:
         return version_match
 
     async def wakeup(self):
-        while True:
+        while self.running:
             await asyncio.sleep(1)
 
     def start(self) -> None:
+        self.running = True
         coro = asyncio.start_server(self.handle_connection, self.ip_address, self.port, loop=self.loop)
         self.server = self.loop.run_until_complete(coro)
 
         print(f"Serving on {self.server.sockets[0].getsockname()}")
 
         # Win hack
-        if platform.system() != "Windows":
+        if platform.system() == "Windows":
             self.loop.create_task(self.wakeup())
             try:
                 self.loop.run_forever()
             except KeyboardInterrupt:
-                pass
+                self.loop.run_until_complete(self.wakeup())
         else:
             self.loop.run_forever()
 
@@ -65,6 +67,7 @@ class Server:
         self.loop.close()
 
     def stop(self) -> None:
+        self.running = False
         self.loop.stop()
 
 def main() -> None:
