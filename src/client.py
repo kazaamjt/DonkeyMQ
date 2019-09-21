@@ -3,6 +3,7 @@ An AMQP 1.0.0 client implementation.
 Specifically aimed at working with DonkeyMQ.
 """
 import asyncio
+import platform
 
 from shared import get_event_loop, get_protocol_header_bytes
 
@@ -17,8 +18,9 @@ class Client:
         self.loop = loop
         self.protocol_header = get_protocol_header_bytes()
 
-        self.reader: asyncio.streams.StreamReader
-        self.writer: asyncio.streams.StreamWriter
+        if platform.system() != "Windows":
+            self.reader: asyncio.streams.StreamReader
+            self.writer: asyncio.streams.StreamWriter
 
     async def connect(self) -> None:
         self.reader, self.writer = await asyncio.open_connection(self.ip_address, self.port, loop=self.loop)
