@@ -3,6 +3,7 @@ An AMQP 1.0.0 server implementation.
 Specifically aimed to be AMQP 1.0.0 compliant.
 """
 import signal
+import platform
 import asyncio
 from asyncio.streams import StreamReader, StreamWriter
 
@@ -15,8 +16,10 @@ class Server:
         self.loop = get_event_loop()
         self.protocol_header = get_protocol_header_bytes()
 
-        self.loop.add_signal_handler(signal.SIGTERM, self.stop)
-        self.loop.add_signal_handler(signal.SIGINT, self.stop)
+        # Win hack
+        if platform.system() != "Windows":
+            self.loop.add_signal_handler(signal.SIGTERM, self.stop)
+            self.loop.add_signal_handler(signal.SIGINT, self.stop)
 
         self.server: asyncio.base_events.Server
 
@@ -37,12 +40,25 @@ class Server:
 
         return version_match
 
+    async def wakeup(self):
+        while True:
+            await asyncio.sleep(1)
+
     def start(self) -> None:
         coro = asyncio.start_server(self.handle_connection, self.ip_address, self.port, loop=self.loop)
         self.server = self.loop.run_until_complete(coro)
 
         print(f"Serving on {self.server.sockets[0].getsockname()}")
-        self.loop.run_forever()
+
+        # Win hack
+        if platform.system() != "Windows":
+            self.loop.create_task(self.wakeup())
+            try:
+                self.loop.run_forever()
+            except KeyboardInterrupt:
+                pass
+        else:
+            self.loop.run_forever()
 
         self.server.close()
         self.loop.run_until_complete(self.server.wait_closed())
