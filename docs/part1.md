@@ -31,7 +31,7 @@ The default eventloop on windows is currently not interuptable.
 While in python 3.8 this is supposedly fixed, it is not in my 3.7.4 version.  
 So I set up a litle function that hands the right type of event loop:  
 
-file: *src/shared/__init__.py*
+file: *src/shared/\_\_init\_\_.py*  
 
 ```python
 import sys
@@ -54,7 +54,7 @@ We then expect an "ok" reply and close the connection either way.
 
 This emulates the setting up and tearing down connections a litle bit like AMQP does.  
 
-file: *src/client.py*
+file: *src/client.py*  
 
 ```python
 import asyncio
@@ -78,10 +78,10 @@ class Client:
 
     async def test(self) -> None:
         await self.connect()
-        self.writer.write("test".encode())
+        self.writer.write(b"test")
         data = await self.reader.read(100)
         if data.decode() == "message received":
-            self.writer.write("close".encode())
+            self.writer.write(b"close")
 
             data = await self.reader.read(100)
             if data.decode() == "ok":
@@ -117,7 +117,7 @@ Running python apps as a service on windows is a pain. (windows services are a p
 A somewhat simple module allowing python scripts to run as a service can be found [here](https://github.com/kazaamjt/WinPyService).  
 But I digress, back to programming:  
 
-file: *src/server.py*
+file: *src/server.py*  
 
 ```python
 import signal
@@ -187,7 +187,7 @@ besides that it's important to note that `self.loop.stop()` gets called in `self
 This is because otherwise python tries to start a new loop to close the server while the current loop still exists.  
 
 Now about running this in a container, on a linux machine this is not needed, but you have litle choice on windows.  
-Luckely docker is quick to get going, a very simple `Dockerfile` will get us going:
+Luckely docker is quick to get going, a very simple `Dockerfile` will get us going:  
 
 ```Dockerfile
 FROM python:3.7.4-slim-buster
@@ -200,12 +200,15 @@ EXPOSE 5672
 CMD ["python", "server.py"]
 ```
 
-Now all we need to do is build this image and then run it:
+Now all we need to do is build this image and then run it:  
 
-`docker build -t donkey-server .`
-`docker run -p 5672:5672 --name donkey_server_instance -i -t donkey-server`
+`docker build -t donkey-server .`  
+`docker run -p 5672:5672 --name donkey_server_instance -i -t donkey-server`  
 
 I am not going to go any deeper in to the usage of docker, as I consider it out of scope for this guide.  
 
 And with that, the groundwork for both our client library and server have been laid.  
 In part 2 we will get in to the actual AMQP spec itself, discussing frames and frame-headers and how to handle those.  
+
+[Back to index](index.md)  
+[>> title: Part 2 - version negotiation](part2.md)  
