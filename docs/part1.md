@@ -208,7 +208,7 @@ Now all we need to do is build this image and then run it:
 I am not going to go any deeper in to the usage of docker, as I consider it out of scope for this guide.  
 
 And with that, the groundwork for both our client library and server have been laid.  
-In part 2 we will get in to the actual AMQP spec itself, discussing frames and frame-headers and how to handle those.  
+In part 2 we will get in to the actual AMQP spec itself, discussing connections and connection handshakes and how to handle those.  
 
 [Back to index](index.md)  
-[>> title: Part 2 - version negotiation](part2.md)  
+[title: Part 2 - version negotiation >>](part2.md)  

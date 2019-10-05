@@ -158,4 +158,4 @@ EXTRA NOTE: I also implemented a very, very uggly hack to make the server functi
 
 [Back to index](index.md)  
 
-[<< Part 1 - Introduction and setup](part1.md) [Full Part 2 code](part2_code.md) [Part 3 - AMQP Frames >>](part3.md)  
+[<< Part 1 - Introduction and setup](part1.md) | [Full Part 2 code](part2_code.md) | [Part 3 - AMQP Frames >>](part3.md)  
