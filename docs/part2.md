@@ -15,7 +15,7 @@ So lets's store that in a shared const module:
 
 file: *src/shared/consts.py*  
 
-```Python
+```python
 """
 A module holding constants shared by the server and client.
 """
@@ -44,7 +44,7 @@ For now, we'll add a function to convert integers and strings to amqp network by
 
 file: *src/shared/amqp.py*  
 
-```Python
+```python
 def str_to_bytes(string: str) -> bytes:
     return string.encode("utf-8")
 
@@ -63,7 +63,7 @@ Next, let's add a header constructor to our shared module:
 
 file: *src/shared/\_\_init\_\_.py*  
 
-```Python
+```python
 from shared import consts
 from shared import amqp
 
@@ -80,7 +80,7 @@ Next let's add it to our client and sent it as our first message.
 
 file: *src/client.py*  
 
-```Python
+```python
 class Client:
     def __init__(self, ip_address: str, port: int = 5672, loop: asyncio.AbstractEventLoop = get_event_loop()) -> None:
         self.ip_address = ip_address
@@ -119,7 +119,7 @@ The code we add is basicly the same as for the client, but in a slightly differe
 
 file: *src/server.py*  
 
-```Python
+```python
 class Server:
     def __init__(self, ip_address: str = "0.0.0.0", port: int = 5672) -> None:
         self.ip_address = ip_address

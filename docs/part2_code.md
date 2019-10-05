@@ -1,6 +1,6 @@
 file: *src/shared/consts.py*  
 
-```Python
+```python
 """
 A module holding constants shared by the server and client.
 """
@@ -9,7 +9,7 @@ AMQP_VERSION = (1, 0, 0)
 
 file: *src/shared/amqp.py*  
 
-```Python
+```python
 import sys
 import asyncio
 from typing import Any
@@ -39,7 +39,7 @@ def get_protocol_header_bytes() -> bytes:
 
 file: *src/shared/\_\_init\_\_.py*  
 
-```Python
+```python
 """Various miscellaneous things that are shared amongst the client and server"""
 
 import sys
@@ -71,7 +71,7 @@ def get_protocol_header_bytes() -> bytes:
 
 file: *src/client.py*  
 
-```Python
+```python
 """
 An AMQP 1.0.0 client implementation.
 Specifically aimed at working with DonkeyMQ.
@@ -130,7 +130,7 @@ if __name__ == "__main__":
 
 file: *src/server.py*  
 
-```Python
+```python
 """
 An AMQP 1.0.0 server implementation.
 Specifically aimed to be AMQP 1.0.0 compliant.

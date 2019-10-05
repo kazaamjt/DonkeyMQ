@@ -41,7 +41,7 @@ class Server:
 
         return version_match
 
-    async def wakeup(self):
+    async def wakeup(self) -> None:
         while self.running:
             await asyncio.sleep(1)
 

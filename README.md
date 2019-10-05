@@ -2,7 +2,7 @@
 
 DonkeyMQ is my attempt at making an AMQP client and server.  
 
-Follow my journey [here](https://kazaamjt.github.io/DonkeyMQ/).  
+Follow this project step by step [here](https://kazaamjt.github.io/DonkeyMQ/).  
 
 ## The server in docker
 
