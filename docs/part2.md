@@ -155,6 +155,7 @@ And that's it for version negotiation.
 
 NOTE: I put a guard on the signal handlers, as they are not implemented on windows.  
 EXTRA NOTE: I also implemented a very, very uggly hack to make the server function on windows.  
+This does mean The server works on windows too, and docker isn longer required. (But still very helpfull)  
 
 [Back to index](index.md)  
 
