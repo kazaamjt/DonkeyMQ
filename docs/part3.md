@@ -14,13 +14,11 @@ They are pretty much the basis of AMQP communication and are used for almost eve
 
 Frames can be made up of 3 parts:  
 
-```
-        required        optional        optional   
+        required        optional        optional
     +--------------+-----------------+------------+
     | frame header | extended header | frame body |
     +--------------+-----------------+------------+
-        8 bytes        *variable*      *variable*  
-```
+        8 bytes        *variable*      *variable*
 
 The `Frame header` is a fixed 8 bytes long and is the first part of every frame transmitted.
 It tells more about how to parse the extended header and body.  
@@ -35,7 +33,7 @@ While the body and the extended header are very dependant on the frame type, the
 so we'll only get in to how the header is formed here.  
 
 The `Frame Header` is, as mentioned earlier, a fixed 8 bytes long.  
-The first 4 bytes (byte index 0 to 3) define the total frame size.
+The first 4 bytes (byte index 0 to 3) define the total `frame size`.  
 It's an unsigned 32-bit integer expressing the combined size of the header, extended header and the body.  
 
 The next byte (byte index 4) is the `Data Offset`, also refered to als DOFF in the spec.  
@@ -46,11 +44,20 @@ As the header is 8 bytes long, the minumum offset is 2, and anything lower would
 
 Then comes a single byte to denote the `Frame Type` (byte index 5).  
 It is expressed in `AMQP Type codes` and indicates the format and purpose of the frame.  
-For example, `0x00` indicates a standard AMQP frame and `0x01` indicates SASL frame.  
+For example, `0x00` indicates a standard AMQP frame and `0x01` indicates a SASL frame.  
 
-The last 2 bytes are type specific. We'll come back to those when we run in to them.  
+The last 2 bytes (byte index 6 and 7) are noted to be type specific.  
+The next chapter opens by stating they contain the channel number, so we'll assume they will unless noted otherwise.  
+
+All together this gives us the following:
+
+        +0       +1       +2       +3
+      +-----------------------------------+
+    0 |                SIZE               |
+      +-----------------------------------+
+    4 |  DOFF  |  TYPE  |     CHANNEL     |
+      +-----------------------------------+
+
+Now that we got through the header part of the Frames, let's make a class to represent our frame header.  
 
 ## Nodes, Containers, Links, Sessions, etc
-
-Before we can get in to any implentation of Frames, we have to learn more about some AMQP abstractions.  
-
